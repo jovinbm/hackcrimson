@@ -25,6 +25,7 @@ type Entity {
   id: MongooseObjectId
   pollId: MongooseObjectId
   poll: Poll
+  votes(body: VoteFindParams): VoteResults
   name: String
   description: String
   createdDate: Date
@@ -136,7 +137,8 @@ type Poll {
   id: MongooseObjectId
   name: String
   description: String
-  entities: EntityResults
+  entities(body: EntityFindParams): EntityResults
+  votes(body: VoteFindParams): VoteResults
   createdDate: Date
   updatedDate: Date
 }
@@ -149,6 +151,69 @@ input pollUpdateBody {
 
 extend type Mutation {
   pollUpdate(token: String!, body: pollUpdateBody!): Poll
+}
+
+input voteCreateBody {
+  userId: String!
+  pollId: MongooseObjectId!
+  entityId: MongooseObjectId!
+}
+
+extend type Mutation {
+  voteCreate(token: String!, body: voteCreateBody!): Vote
+}
+
+input voteDeleteBody {
+  id: MongooseObjectId!
+}
+
+extend type Mutation {
+  voteDelete(token: String!, body: voteDeleteBody!): Vote
+}
+
+enum VoteFindParamsSort {
+  createdDateASC
+  createdDateDESC
+}
+
+input VoteFindParams {
+  page: Int = 1
+  quantity: Int = 100
+  ids: [MongooseObjectId!]
+  pollIds: [MongooseObjectId!]
+  entityIds: [MongooseObjectId!]
+  minCreatedDate: Date
+  maxCreatedDate: Date
+  minUpdatedDate: Date
+  maxUpdatedDate: Date
+  sort: [VoteFindParamsSort!]
+}
+
+type VoteResults {
+  page: Int!
+  quantity: Int!
+  totalPages: Int!
+  totalResults: Int!
+  items: [Vote!]!
+}
+
+extend type Query {
+  votes(token: String!, body: VoteFindParams!): VoteResults
+}
+
+extend type Query {
+  vote(token: String!, id: MongooseObjectId!): Vote
+}
+
+type Vote {
+  id: MongooseObjectId
+  userId: String
+  pollId: MongooseObjectId
+  poll: Poll
+  entityId: MongooseObjectId
+  entity: Entity
+  createdDate: Date
+  updatedDate: Date
 }
 
 scalar Date

@@ -29,6 +29,7 @@
     "graphql-tools": "^2.23.1",
     "html-minifier": "^3.5.14",
     "intersect": "^1.0.1",
+    "ioredis": "^3.2.2",
     "lodash.merge": "^4.6.1",
     "moment": "^2.22.0",
     "mongoose": "^5.0.14",

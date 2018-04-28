@@ -1,12 +1,14 @@
 const gql = require('graphql-tag')
 const {getEntityIds, getEntities} = require('../entities/getEntities')
+const {getVoteIds, getVotes} = require('../votes/getVotes')
 
 const types = gql`
   type Poll {
     id: MongooseObjectId
     name: String
     description: String
-    entities: EntityResults
+    entities(body: EntityFindParams): EntityResults
+    votes(body: VoteFindParams): VoteResults
     createdDate: Date
     updatedDate: Date
   }
@@ -35,6 +37,29 @@ const resolver = {
         totalPages,
         totalResults,
         items: Object.keys(entities).map(i => entities[i]).sort((a, b) => ids.indexOf(a.id) > ids.indexOf(b.id) ? 1 : -1),
+      }
+    },
+    votes: async function(poll, args) {
+      const pollId = poll.id
+      const {
+        ids,
+        page,
+        quantity,
+        totalPages,
+        totalResults,
+      } = await getVoteIds({
+        ...args.body,
+        pollIds: [pollId],
+      })
+      
+      const {votes} = await getVotes(ids)
+      
+      return {
+        page,
+        quantity,
+        totalPages,
+        totalResults,
+        items: Object.keys(votes).map(i => votes[i]).sort((a, b) => ids.indexOf(a.id) > ids.indexOf(b.id) ? 1 : -1),
       }
     },
   },
