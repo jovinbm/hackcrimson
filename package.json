@@ -1,0 +1,49 @@
+{
+  "name": "hackthecrimson-api",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": "8.9.0",
+    "npm": "5.5.1"
+  },
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint . --ext .js",
+    "graphql": "node generate-graphql-schema.js",
+    "build": "npm install && npm run graphql",
+    "start-dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "apollo-server-express": "^1.3.4",
+    "array-unique": "^0.3.2",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "cron": "^1.3.0",
+    "debug": "^3.1.0",
+    "ejs": "^2.5.8",
+    "express": "^4.16.3",
+    "glob": "^7.1.2",
+    "graphql": "^0.13.2",
+    "graphql-fetch": "^1.0.1",
+    "graphql-tag": "^2.8.0",
+    "graphql-tools": "^2.23.1",
+    "html-minifier": "^3.5.14",
+    "intersect": "^1.0.1",
+    "lodash.merge": "^4.6.1",
+    "moment": "^2.22.0",
+    "mongoose": "^5.0.14",
+    "mongoose-paginate": "^5.0.3",
+    "morgan": "^1.9.0",
+    "serve-favicon": "^2.5.0",
+    "split-array": "^1.0.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.2",
+    "eslint": "^4.19.1",
+    "eslint-plugin-jest": "^21.15.0",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-react": "^7.7.0",
+    "generate-graphql": "^1.0.1",
+    "nodemon": "^1.17.3"
+  }
+}
