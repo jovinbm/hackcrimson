@@ -13,9 +13,13 @@ const SchemaDefinition = gql`
   type Mutation {
     welcomeMutation: Int
   }
+  type Subscription {
+    welcomeSubscription: Int
+  }
   schema {
     query: Query
     mutation: Mutation
+    subscription: Subscription
   }
 `
 let typeDefs = [SchemaDefinition]
@@ -27,12 +31,14 @@ schemas.map(sc => {
     types = [],
     queries = [],
     mutations = [],
+    subscriptions = [],
     resolvers: rsvs = [],
   } = sc
   
   typeDefs = typeDefs.concat(types)
   typeDefs = typeDefs.concat(queries)
   typeDefs = typeDefs.concat(mutations)
+  typeDefs = typeDefs.concat(subscriptions)
   resolvers = resolvers.concat(rsvs)
   
   return true

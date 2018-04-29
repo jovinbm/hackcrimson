@@ -25,6 +25,7 @@
     "glob": "^7.1.2",
     "graphql": "^0.13.2",
     "graphql-fetch": "^1.0.1",
+    "graphql-subscriptions": "^0.5.8",
     "graphql-tag": "^2.8.0",
     "graphql-tools": "^2.23.1",
     "html-minifier": "^3.5.14",
@@ -36,7 +37,8 @@
     "mongoose-paginate": "^5.0.3",
     "morgan": "^1.9.0",
     "serve-favicon": "^2.5.0",
-    "split-array": "^1.0.1"
+    "split-array": "^1.0.1",
+    "subscriptions-transport-ws": "^0.9.8"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",

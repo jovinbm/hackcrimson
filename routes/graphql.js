@@ -4,6 +4,7 @@ const express = require('express')
 const router = express.Router()
 const compiledGraphQLSchema = require('../graphql.schema')
 const errors = require('../errors')
+const config = require('../config')
 
 function formatMongooseErrors(err) {
   if (!err) {
@@ -70,6 +71,7 @@ router.use('/graphql', (req, res, next) => {
 
 router.all('/graphiql', graphiqlExpress({
   endpointURL: '/graphql',
+  subscriptionsEndpoint: `ws://localhost:${config.port}/subscriptions`,
 }))
 
 module.exports = router

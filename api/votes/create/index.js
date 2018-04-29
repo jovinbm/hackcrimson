@@ -2,6 +2,7 @@ const Poll = require('../../../models/Poll/index')
 const Entity = require('../../../models/Entity/index')
 const Vote = require('../../../models/Vote/index')
 const errors = require('../../../errors.js')
+const pubSub = require('../../../graphql/pubSub')
 
 exports.voteCreate = async function(data) {
   const voteData = {}
@@ -42,6 +43,11 @@ exports.voteCreate = async function(data) {
   } else {
     const newVote = new Vote(voteData)
     await newVote.save()
+    pubSub.publish('pollVote', {
+      pollVote: {
+        status: 1,
+      },
+    })
     return {
       votes: {
         [newVote._id]: newVote.toJSON(),

@@ -1,6 +1,7 @@
 const gql = require('graphql-tag')
 const {getEntityIds, getEntities} = require('../entities/getEntities')
 const {getVoteIds, getVotes} = require('../votes/getVotes')
+const pubSub = require('../../graphql/pubSub')
 
 const types = gql`
   type Poll {
@@ -11,6 +12,15 @@ const types = gql`
     votes(body: VoteFindParams): VoteResults
     createdDate: Date
     updatedDate: Date
+  }
+`
+
+const subscriptions = gql`
+  type PV {
+    status: Int
+  }
+  extend type Subscription {
+    pollVote: PV
   }
 `
 
@@ -63,7 +73,13 @@ const resolver = {
       }
     },
   },
+  Subscription: {
+    pollVote: {
+      subscribe: () => pubSub.asyncIterator('pollVote'),
+    },
+  },
 }
 
 exports.types = [types]
 exports.resolvers = [resolver]
+exports.subscriptions = [subscriptions]

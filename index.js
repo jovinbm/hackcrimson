@@ -6,7 +6,10 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const config = require('./config')
 const routes = require('./routes')
-
+const {execute, subscribe} = require('graphql')
+const {createServer} = require('http')
+const graphQlSchema = require('./graphql/schema')
+const {SubscriptionServer} = require('subscriptions-transport-ws')
 // http://mongoosejs.com/docs/promises.html
 mongoose.Promise = global.Promise
 mongoose.connect(config.mongoUrl)
@@ -57,7 +60,18 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500).send()
 })
 
-const server = app.listen(config.port)
-console.log('Listening at http://localhost:%s in %s mode', server.address().port, app.get('env'))
+const ws = createServer(app)
+ws.listen(config.port, () => {
+  console.log(`app is now running on http://localhost:${config.port}`)
+  // Set up the WebSocket for handling GraphQL subscriptions
+  new SubscriptionServer({
+    execute,
+    subscribe,
+    schema: graphQlSchema,
+  }, {
+    server: ws,
+    path: '/subscriptions',
+  })
+})
 
 module.exports = app
